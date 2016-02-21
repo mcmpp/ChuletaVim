@@ -1,0 +1,348 @@
+
+% VIM Quick Reference Card
+% Copyright (c) 2002 Laurent Gregoire.
+% TeX Format
+
+
+% Note:  Comment the following line (\input outopt.tex) if you want
+% to generate yourself the card, either in DVI or PDF format.
+% Uncomment the three next lines for PDF generation.
+% Command for DVI : tex vimqrc.tex
+% Command for PDF : pdftex vimqrc.tex
+
+\input outopt.tex
+
+% \pdfoutput=1
+% \pdfpageheight=21cm
+% \pdfpagewidth=29.7cm
+
+% Font definitions
+\font\bigbf=cmbx12
+\font\smallrm=cmr8
+\font\smalltt=cmtt8
+\font\tinyit=cmmi5
+
+\def\title#1{\hfil{\bf #1}\hfil\par\vskip 2pt\hrule}
+\def\cm#1#2{{\tt#1}\dotfill#2\par}
+\def\cn#1{\hfill$\lfloor$ #1\par}
+\def\sect#1{\vskip 0.7cm {\it#1\/}\par}
+
+% Characters definitions
+\def\bs{$\backslash$}
+\def\backspace{$\leftarrow$}
+\def\ctrl{{\rm\char94}\kern-1pt}
+\def\enter{$\hookleftarrow$}
+\def\or{\thinspace{\tinyit{or}}\thinspace}
+\def\key#1{$\langle${\rm{\it#1\/}}$\rangle$}
+\def\rapos{\char125}
+\def\lapos{\char123}
+\def\bs{\char92}
+\def\tild{\char126}
+
+% Three columns definitions
+\parindent 0pt
+\nopagenumbers
+\hoffset=-1.56cm
+\voffset=-1.54cm
+\newdimen\fullhsize
+\fullhsize=27.9cm
+\hsize=8.5cm
+\vsize=19cm
+\def\fullline{\hbox to\fullhsize}
+\let\lr=L
+\newbox\leftcolumn
+\newbox\midcolumn
+\output={
+  \if L\lr
+    \global\setbox\leftcolumn=\columnbox
+    \global\let\lr=M
+  \else\if M\lr
+    \global\setbox\midcolumn=\columnbox
+    \global\let\lr=R
+  \else
+    \tripleformat
+    \global\let\lr=L
+  \fi\fi
+  \ifnum\outputpenalty>-20000
+  \else
+    \dosupereject
+  \fi}
+\def\tripleformat{
+  \shipout\vbox{\fullline{\box\leftcolumn\hfil\box\midcolumn\hfil\columnbox}}
+  \advancepageno}
+\def\columnbox{\leftline{\pagebody}}
+
+% Card content
+% Header
+%\hrule\vskip 3pt
+\title{VIM --- CARTA DE REFERENCIA R\'APIDA}
+
+\sect{Movimiento b\'asico}
+\cm{h l k j}{caracter izq., derecha; l\'{\i}nea arriba, abajo}
+\cm{b w}{palabra/s\'{\i}mbolo izquierda, derecha}
+\cm{ge e}{fin de palabra/s\'{\i}mbolo izquierda, derecha}
+\cm{\lapos\ \rapos}{principio del anterior, siguiente p\'arrafo}
+\cm{( )}{comienzo de anterior, siguiente oraci\'on}
+\cm{0 gm}{principio, medio de la l\'{\i}nea}
+\cm{\^\ \$}{primer, \'ultimo caracter de la l\'{\i}nea}
+\cm{$n$G $n$gg}{l\'{\i}nea $n$. por defecto la primera, \'ultima}
+\cm{$n$\%}{porcentaje $n$ del archivo {\it($n$ es obligatorio)\/}}
+\cm{$n|$}{columna $n$ de la l\'{\i}nea actual}
+\cm{\%}{siguiente llave, par\'entesis, comentario, {\tt\#define}}
+\cm{$n$H $n$L}{l\'{\i}nea $n$ desde el principio, medio de la ventana}
+\cm{M}{medio de la ventana}
+
+\sect{Inserci\'on \& sustituci\'on $\to$ modo insertar}
+\cm{i a}{insertar antes, despu\'es del cursor}
+\cm{I A}{insertar al principio, fin de la l\'{\i}nea}
+\cm{gI}{insertar texto en la primera columna}
+\cm{o O}{insertar nueva l\'{\i}nea abajo, arriba de la actual}
+\cm{r$c$}{sustituir caracter bajo el cursor por $c$}
+\cm{gr$c$}{como {\tt r}, pero sin afectar el dise\~no}
+\cm{R}{sustituir caracteres a partir del cursor}
+\cm{gR}{como {\tt R}, pero sin afectar el dise\~no}
+\cm{c$m$}{cambiar texto del comando de deplazamiento $m$}
+\cm{cc\or S}{cambiar l\'{\i}nea actual}
+\cm{C}{cambiar hasta el fin de la l\'{\i}nea}
+\cm{s}{cambiar un caracter e insertar}
+\cm{\tild}{invertir may\'uscula/min\'uscula y avanzar el cursor}
+\cm{g\tild{$m$}}{invertir may\'us/min\'us del movimiento $m$}
+\cm{gu$m$ gU$m$}{min\'uscula, may\'uscula texto movimiento $m$}
+\cm{$<$$m$ $>$$m$}{desplazar izq., der. texto del movimiento $m$}
+\cm{$n$$<$\kern-3pt$<$ $n$$>$\kern-3pt$>$}{desplazar $n$ l\'{\i}neas a la izquierda, derecha}
+
+\sect{Borrado}
+\cm{x X}{eliminar caracter sobre, previo al cursor}
+\cm{d$m$}{eliminar texto de comando de movimiento $m$}
+\cm{dd D}{eliminar l\'{\i}nea actual, hasta fin de l\'{\i}nea actual}
+\cm{J gJ}{juntar linea actual con la siguiente, sin espacio}
+\cm{:$r$d\enter}{eliminar rango $r$ de l\'{\i}neas}
+\cm{:$r$d$x$\enter}{eliminar rango $r$ de l\'{\i}neas al registro $x$}
+
+\sect{Modo insertar}
+\cm{\ctrl V$c$ \ctrl V$n$}{insertar caracter $c$ literal, con valor decimal $n$}
+% \cm{\ctrl V$n$}{insert decimal value of character}
+\cm{\ctrl A}{insertar \'ultimo texto insertado}
+\cm{\ctrl @}{igual que {\tt\ctrl A} y detener inserci\'on $\to$ modo comando}
+\cm{\ctrl R$x$ \ctrl R\ctrl R$x$}{insertar contenido de registro $x$, literal}
+\cm{\ctrl N \ctrl P}{completar texto antes, luego del cursor}
+\cm{\ctrl W}{eliminar palabra anterior al cursor}
+\cm{\ctrl U}{eliminar todo el texto insertado en la l\'{\i}nea actual}
+\cm{\ctrl D \ctrl T}{desplazar linea a la izquierda, derecha}
+\cm{\ctrl K$c_1$$c_2$\or $c_1$\kern-1pt\backspace$c_2$}{entrar d\'{\i}grafo $\{c_1,c_2\}$}
+\cm{\ctrl O$c$}{ejecutar $c$ en modo de temporal de comando}
+\cm{\ctrl X\ctrl E \ctrl X\ctrl Y}{scrollear arriba, abajo}
+\cm{\key{esc}\or \ctrl[}{salir del modo edici\'on $\to$ modo comando}
+
+\sect{Copiado}
+\cm{"$x$}{usar registro $x$ para la siguiente acci\'on}
+\cm{:reg\enter}{mostrar contenido de todos los registros}
+\cm{:reg $x$\enter}{mostrar contenido de los registros $x$}
+\cm{y$m$}{copiar texto del movimiento $m$}
+\cm{yy\or Y}{copiar l\'{\i}nea actual al registro}
+\cm{p P}{pegar registro antes, despues del cursor}
+\cm{]p [p}{como {\tt p}, {\tt P} pero ajustando la sangr\'{\i}a}
+\cm{gp gP}{igual, pero cursor queda luego de texto nuevo}
+
+\sect{Inserci\'on avanzada}
+\cm{g?$m$}{realizar codificaci\'on rot13 en movimiento $m$}
+\cm{$n$\ctrl A $n$\ctrl X}{incrementar/disminuir numero bajo el cursor}
+\cm{gq$m$}{formatear l\'{\i}nea de movimiento $m$ a ancho fijo}
+\cm{:$r$ce $w$\enter}{centrar l\'{\i}neas en rango $r$ a ancho $w$}
+\cm{:$r$le $i$\enter}{alinear izq. lineas en rango $r$ con sangr\'{\i}a $i$}
+\cm{:$r$ri $w$\enter}{alinear der. lineas en rango $r$ con ancho $w$}
+\cm{!$m$$c$\enter}{aplicar comando $c$ al movimiento $m$}
+\cm{$n$!!$c$\enter}{aplicar comando $c$ a siguientes $n$ lineas}
+\cm{:$r$!$c$\enter}{aplicar comando $c$ a rango de l\'{\i}neas $r$}
+
+\sect{Modo visual}
+\cm{v V \ctrl V}{empezar/terminar marca caract, l\'{\i}neas, bloque}
+\cm{o}{cursor de selecci\'on al principio/fin del marcado}
+\cm{gv}{empezar a marcar utilizando \'ultima zona marcada}
+\cm{aw as ap}{seleccionar una palabra, oraci\'on, p\'arrafo}
+\cm{ab aB}{seleccionar un bloque ( ), un bloque {\tt\lapos} {\tt\rapos}}
+
+\vskip 1cm
+\sect{Deshacer, repetir \& registros}
+\cm{u U}{deshacer \'ultimo comando, restaurar \'ultima l\'{\i}nea}
+\cm{.\thinspace\thinspace\ctrl R}{repetir \'ultimos cambios, rehacer \'ultimo deshacer}
+\cm{$n$.\ }{repetir \'ultimos cambios $n$ veces}
+\cm{q$c$ q$C$}{grabar, agregar teclas tipeadas en registro $c$}
+\cm{q}{detener grabaci\'on}
+\cm{@$c$}{ejecutar el contenido del registro $c$}
+\cm{@@}{repetir comando {\tt @} anterior}
+\cm{:@$c$\enter}{ejecutar registro $c$ como un comando {\it Ex\/}}
+\cm{:$r$g/$p$/$c$\enter}{ejecutar comando {\it Ex\/} $c$ en rango $r$}
+\cn{donde se cumpla el patr\'on $p$}
+
+\vskip -0.2cm
+\sect{Movimiento complejo}
+\cm{- +}{l\'{\i}nea arriba, abajo al primer caracter no blanco}
+\cm{B W}{siguiente, anterior palabra separada por espacio}
+\cm{gE E}{fin de anterior, siguiente palabra espaciada}
+\cm{$n$\_}{al primer caracter no blanco en linea $n-1$ debajo}
+\cm{g0}{principio de la l\'{\i}nea en {\it pantalla\/}}
+\cm{g\^\ g\$}{primer, \'ultimo caracter de la l\'{\i}nea en {\it pantalla\/}}
+\cm{gk gj}{l\'{\i}nea en {\it pantalla\/} arriba, abajo}
+\cm{f$c$ F$c$}{siguiente, anterior ocurrencia del caracter $c$}
+\cm{t$c$ T$c$}{antes de la siguiente, anterior occurencia de $c$}
+\cm{; ,}{repetir \'ultima {\tt fFtT}, en direcci\'on opuesta}
+\cm{[[ ]]}{comienzo de la secci\'on hacia atr\'as, adelante}
+\cm{[] ][}{fin de la secci\'on hacia atr\'as, adelante}
+\cm{[( ])}{seccion (, ) abierta hacia atr\'as, adelante}
+\cm{[\lapos\ ]\rapos}{seccion {\tt\lapos}, {\tt\rapos} abierta hacia atr\'as, adelante}
+\cm{[m ]m}{comienzo de m\'etodo {\it Java\/} hacia atr\'as, adelante}
+\cm{[\# ]\#}{{\tt\#if}, {\tt\#else}, {\tt\#endif} abierto atr\'as, adelante}
+\cm{[* ]*}{principio, fin de {\tt/* */} hacia atr\'as, adelante}
+
+\sect{B\'usqueda \& sustituci\'on}
+\cm{/$s$\enter\ ?$s$\enter}{buscar $s$ hacia adelante, atr\'as}
+\cm{/$s$/$o$\enter\ ?$s$?$o$\enter}{buscar $s$ adelante, atr\'as con desplaz. $o$}
+\cm{n\or /\enter}{repetir \'ultima b\'usqueda hacia adelante}
+\cm{N\or ?\enter}{repetir \'ultima b\'usqueda hacia atr\'as}
+\cm{\# *}{buscar adelante, atr\'as palabra sobre cursor}
+\cm{g\# g*}{igual, pero buscar tambien resultados parciales}
+\cm{gd gD}{definici\'on local, global de s\'{\i}mbolo sobre cursor}
+\cm{:$r$s/$f$/$t$/$x$\enter}{sustituir $f$ por $t$ en rango $r$}
+\cn{$x:$ {\tt g}---todas las ocurrencias, {\tt c}---confirmar cambios}
+\cm{:$r$s $x$\enter}{repetir sustituci\'on con nuevo $r$ \& $x$}
+
+\vskip1cm
+\sect{Caracteres especiales en patrones de busqueda}
+\cm{.\thinspace\thinspace\thinspace\ctrl\ \$}{caracter simple; comienzo, fin de l\'{\i}nea}
+\cm{\bs$<$ \bs$>$}{comienzo, fin de palabra}
+\cm{[$c_1$-$c_2$]}{caracter simple en el rango $c_1..c_2$}
+\cm{[\ctrl$c_1$-$c_2$]}{caracter simple no en el rango $c_1..c_2$}
+\cm{\bs i \bs k \bs I \bs K}{identificador, palabra clave; excl. d\'{\i}gitos}
+\cm{\bs f \bs p \bs F \bs P}{nombre arch, car. imprim.; ign. d\'{\i}gitos}
+\cm{\bs s \bs S}{espacio en blanco, no espacio en blanco}
+\cm{\bs e \bs t \bs r \bs b}{\key{esc}, \key{tab}, \key{\enter}, \key{$\gets$}}
+\cm{\bs = * \bs +}{$0..1$, $0..\infty$, $1..\infty$ del \'atomo anterior}
+\cm{\bs$|$}{separar dos ramas ($\equiv$ {\it o\/})}
+\cm{\bs( \bs)}{agrupa patrones en un \'atomo}
+\cm{\bs \& \bs $n$}{todo el patr\'on encontrado, grupo $n^{o}$ {\tt()}}
+\cm{\bs u \bs l}{pr\'oximo caracter a may\'uscula, min\'uscula}
+
+\sect{Desplazamientos en comandos de b\'usqueda}
+\cm{$n$\or +$n$}{$n$ l\'{\i}neas hacia abajo en columna 1}
+\cm{-$n$}{$n$ l\'{\i}neas hacia arriba en columna 1}
+\cm{e+$n$ e-$n$}{$n$ caract. der., izq de comienzo del matcheo}
+\cm{s+$n$ s-$n$}{$n$ caract. der., izq. del final del matcheo}
+\cm{;$sc$}{ejecutar comando de b\'usqueda $sc$ a continuaci\'on}
+
+\sect{Marcas y movimiento}
+\cm{m$c$}{marcar posici\'on actual con marca $c\in[a..Z]$}
+\cm{`$c$ `$C$}{ir a marca  $c$ en archivo actual, cualquier archivo}
+\cm{`$0..9$}{ir a \'ultima posici\'on de salida}
+\cm{`\/`  `\/"}{ir a posici\'on antes del salto, de \'ultima edici\'on}
+\cm{`[ `]}{ir al principio, fin del \'ultimo texto operado}
+\cm{:marks\enter}{mostrar lista de marcas activas}
+\cm{:jumps\enter}{mostrar lista de saltos}
+\cm{$n$\ctrl O}{ir a la $n^{a}$ posici\'on m\'as vieja de la lista de saltos}
+\cm{$n$\ctrl I}{ir a la $n^{a}$ posici\'on m\'as nueva de la lista de saltos}
+
+\sect{Mapeo de teclas \& abreviaciones}
+\cm{:map $c$ $e$\enter}{mapear $c\mapsto e$. modo normal \& visual}
+\cm{:map!\ $c$ $e$\enter}{map. $c\mapsto e$. modo insertar \& comandos}
+\cm{:unmap $c$\enter\ :unmap!\ $c$\enter}{borrar mapeo $c$}
+\cm{:mk $f$\enter}{guardar mapeos actuales en archivo $f$}
+\cm{:ab $c$ $e$\enter}{agregar abreviatura para $c\mapsto e$}
+\cm{:ab $c$\enter}{mostrar abreviaturas que empiezan con $c$}
+\cm{:una $c$\enter}{borrar abreviatura $c$}
+
+\sect{Etiquetas}
+\cm{:ta $t$\enter}{saltar a etiqueta $t$}
+\cm{:$n$ta\enter}{saltar a la $n^{a}$ etiqueta mas nueva}
+\cm{\ctrl ] \ctrl T}{saltar a etiqueta sobre cursor, volver de etiqueta}
+\cm{:ts $t$\enter}{listar etiquetas que matchean y elegir una}
+\cm{:tj $t$\enter}{saltar a etiqueta o elegir una si varias cumplen}
+\cm{:tags\enter}{mostrar lista de etiquetas}
+\cm{:$n$po\enter\ :$n$\ctrl T\enter}{saltar desde, hacia $n^{va}$ etiqueta vieja}
+\cm{:tl\enter}{saltar a \'ultima etiqueta que matchea}
+\cm{\ctrl W\rapos\ :pt $t$\enter}{vista previa etiqueta sobre cursor, etiq. $t$}
+\cm{\ctrl W]}{separar ventana y mostrar etiqueta sobre el cursor}
+\cm{\ctrl Wz\or :pc\enter}{cerrar vista previa de etiquetas}
+
+\sect{Scrolleo \& ventanas}
+\cm{\ctrl E \ctrl Y}{scrollear una l\'{\i}nea arriba, abajo}
+\cm{\ctrl D \ctrl U}{scrollear media p\'agina arriba, abajo}
+\cm{\ctrl F \ctrl B}{scrollear una p\'agina arriba, abajo}
+\cm{zt\or z\enter}{poner l\'{\i}nea actual al principio de la ventana}
+\cm{zz\or z.\ }{poner l\'{\i}nea actual al centro de la ventana}
+\cm{zb\or z-}{poner l\'{\i}nea actual al final de la ventana}
+\cm{zh zl}{scrollear un caracter a la derecha, izquierda}
+\cm{zH zL}{scrollear media pantalla a la derecha, izquierda}
+\cm{\ctrl Ws\or :split\enter}{dividir ventana en dos}
+\cm{\ctrl Wn\or :new\enter}{crear nueva ventana vac\'{\i}a}
+\cm{\ctrl Wo\or :on\enter}{hacer ventana actual \'unica en la pantalla}
+\cm{\ctrl Wj \ctrl Wk}{pasar a la ventana de abajo, arriba}
+\cm{\ctrl Ww \ctrl W\ctrl W}{pasar a la ventana de abajo, arriba (cicl\'{\i}co)}
+
+\sect{Comandos Ex (\enter)}
+\cm{:e $f$}{editar archivo $f$, a menos que hayan cambios}
+\cm{:e!\ $f$}{editar archivo $f$ siempre (recargar el actual)}
+\cm{:wn :wN}{guardar archivo y editar siguiente, anterior}
+\cm{:n :N}{editar archivo siguiente, anterior de la lista}
+\cm{:$r$w}{guardar rango $r$ en archivo actual}
+\cm{:$r$w $f$}{guardar rango $r$ a archivo $f$}
+\cm{:$r$w$>$\kern-3pt$>$$f$}{agregar rango $r$ al archivo $f$}
+\cm{:q :q!}{salir y confirmar, salir e ignorar cambios}
+\cm{:wq\or :x\or ZZ}{guardar archivo actual y salir}
+\cm{\key{up} \key{down}}{recordar comandos anteriores (historial)}
+\cm{:r $f$}{insertar contenido archivo $f$ debajo del cursor}
+\cm{:r!\ $c$}{insertar salida del comando $c$ debajo del cursor}
+\cm{:all}{abrir una vent. por cada arch. pasado en los arg.}
+\cm{:args}{mostrar lista de argumentos}
+
+\sect{Rangos Ex}
+\cm{, ;\ }{separa dos n\'umeros de l\'{\i}nea, primera linea}
+\cm{$n$}{n\'umero de linea absoluto $n$}
+\cm{.\thinspace\thinspace\thinspace\$}{l\'{\i}nea actual, \'ultima linea del archivo}
+\cm{\% *}{todo el archivo, toda el \'area visual}
+\cm{'$t$}{posici\'on de la marca $t$}
+\cm{/$p$/ ?$p$?}{la pr\'oxima, anterior l\'{\i}nea que cumple con $p$}
+\cm{+$n$ -$n$}{$+n$, $-n$ al numero de l\'{\i}nea predecesor}
+
+\sect{Pliegues (folding)}
+\cm{zf$m$}{crear pliegue del movimiento $m$}
+\cm{:$r$fo}{crear pliegue para el rango $r$}
+\cm{zd zE}{borrar pliegue activo, todos los de la ventana}
+\cm{zo zc zO zC}{abrir, cerrar un pliegue; recursivamente}
+\cm{[z ]z}{ir al comienzo, fin del pliegue actual}
+\cm{zj zk}{ir abajo, arriba del comienzo, fin de sig. pliegue}
+
+\sect{Miscel\'aneas}
+\cm{:sh\enter\ :!$c$\enter}{correr shell, ejecutar comando $c$}
+\cm{K}{buscar palabra sobre el cursor con {\tt man}}
+\cm{:make\enter}{correr {\tt make}, leer errores y saltar al primero}
+\cm{:cn\enter\ :cp\enter}{mostrar el siguiente, anterior error}
+\cm{:cl\enter\ :cf\enter}{listar errores, leer errores de archivo}
+\cm{\ctrl L \ctrl G}{redibujar pant., mostrar nombre archivo y pos.}
+\cm{g\ctrl G}{mostrar columna, l\'{\i}nea, palabra, byte actual}
+\cm{ga}{mostrar c\'odigo A{\smallrm SCII} del caracter actual}
+\cm{gf}{abrir archivo con nombre debajo del cursor}
+\cm{:redir$>$$f$\enter}{redirigir salida al archivo $f$}
+\cm{:mkview $[f]$}{guardar config. de vista [en archivo $f$]}
+\cm{:loadview $[f]$}{cargar config. de vista [de archivo $f$]}
+\cm{\ctrl @ \ctrl K \ctrl \_\ \bs\ F$n$ \ctrl F$n$}{teclas no mapeadas}
+
+% Footer
+\def\translator{Pablo Hoffman}
+\vfill \hrule\smallskip
+{\smallrm Esta carta puede ser distribu\'{\i}da libremente
+bajo los t\'erminos de la licencia p\'ublica general GNU ---
+Copyright \copyright\ {\oldstyle 2003} por Laurent Gr\'egoire
+$\langle${\smalltt laurent.gregoire@icam.fr}$\rangle$ --- v1.5 ---
+El autor no asume ninguna responsabilidad por cualquier error en esta carta.
+Ulltima versi\'on en {\smalltt http://tnerual.eriogerg.free.fr/}
+
+Versi\'on espa\~nola por \translator\
+$\langle${\smalltt pablo@pablohoffman.com}$\rangle$}
+
+% Ending
+\supereject
+\if L\lr \else\null\vfill\eject\fi
+\if L\lr \else\null\vfill\eject\fi
+\bye
+
+% EOF
